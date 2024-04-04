@@ -1,4 +1,4 @@
-# SRE Fundamentals with Google - Project from [Uplimit course](https://uplimit.com/course/sre-fundamentals-with-google)
+# SRE Fundamentals with Google - Project - [Uplimit course](https://uplimit.com/course/sre-fundamentals-with-google)
 
 In this project, the task is to deploy UpCommerce's website as a service on Kubernetes. 
 - Define alert rules based on key performance indicators (KPIs) like CPU utilisation, memory usage, and request rates, allowing you to detect and respond to potential issues before they affect the user experience. 
