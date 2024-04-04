@@ -11,7 +11,7 @@ alertmanagerFiles:
         smarthost: smtp.gmail.com:587
         auth_username: aishwaryasarathminikubetest@gmail.com # Update your from mail id here
         auth_identity: aishwaryasarathminikubetest@gmail.com # Update your from mail id here
-        auth_password: {{secrets.GMAILPASS}} # Update your app-password here
+        auth_password: ${{ secrets.GMAILPASS }} # Update your app-password here
         send_resolved: true
         headers:
           subject: " Prometheus -  Alert  "
