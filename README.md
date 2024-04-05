@@ -32,3 +32,34 @@ helm repo update
 helm install grafana grafana/grafana  --namespace sre  --set adminPassword="admin"
 ```
 Add, update helm repo for grafana and install installs the Grafana chart from the grafana repository into the Kubernetes cluster
+
+## Create the deployment & service
+```
+kubectl apply -f deployment.yml -n sre
+kubectl apply -f service.yml -n sre
+```
+
+## Create Minikube service and forwards it to a port 
+```
+minikube service upcommerce-service -n sre
+```
+
+## Forward  Prometheus AlertManager to a port 
+```
+export POD_NAME=$(kubectl get pods --namespace sre -l "app.kubernetes.io/name=alertmanager,app.kubernetes.io/instance=prometheus" -o jsonpath="{.items[0].metadata.name}")
+kubectl --namespace sre port-forward $POD_NAME 9093
+```
+
+## Forward  Prometheus server to a port 
+```
+export POD_NAME=$(kubectl get pods --namespace sre -l "app.kubernetes.io/name=prometheus,app.kubernetes.io/instance=prometheus" -o jsonpath="{.items[0].metadata.name}")
+kubectl --namespace sre port-forward $POD_NAME 9090
+```
+
+## Test the deployment
+```
+minikube service upcommerce-service -n sre --url
+# export $PORT=port from the above command
+kubectl port-forward service/upcommerce-service -n sre $PORT:5000
+```
+
