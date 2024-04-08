@@ -74,9 +74,11 @@ kubectl port-forward service/upcommerce-service -n sre $PORT:5000
 2. Create an app at https://api.slack.com/apps/new
 3. Activate incoming web hooks
 <img width="695" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/f0d73bc3-9f55-4868-9849-9a9987840b52">
+
 4. Add new webhook to workspace and copy the Webhook URL and save it
 <img width="297" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/39c47339-913e-4a1e-8693-711d8fff72c3">
-and select a channel(created in step 1) to post to as an app.
+
+5. select a channel(created in step 1) to post to as an app.
 
 ## Create a configmap to override the default prometheus-alertmanager configmap.
 ```
