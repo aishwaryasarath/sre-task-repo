@@ -62,6 +62,7 @@ minikube service upcommerce-service -n sre --url
 ```
 If the result is 
 http://192.168.49.2:30521
+```
 # export $PORT=30521 from the above command
 kubectl port-forward service/upcommerce-service -n sre $PORT:5000
 ```
