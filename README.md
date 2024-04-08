@@ -59,7 +59,83 @@ kubectl --namespace sre port-forward $POD_NAME 9090
 ## Test the deployment
 ```
 minikube service upcommerce-service -n sre --url
-# export $PORT=port from the above command
+```
+If the result is 
+http://192.168.49.2:30521
+# export $PORT=30521 from the above command
 kubectl port-forward service/upcommerce-service -n sre $PORT:5000
 ```
+<img width="1103" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/078f4f4e-bdec-4e0d-9052-df36cd4d31f7">
+
+
+## Slack and gmail alert
+1. Create a slack workspace and a channel
+2. Create an app at https://api.slack.com/apps/new
+3. Activate incoming web hooks
+<img width="695" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/f0d73bc3-9f55-4868-9849-9a9987840b52">
+4. Add new webhook to workspace and copy the Webhook URL and save it
+<img width="297" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/39c47339-913e-4a1e-8693-711d8fff72c3">
+and select a channel(created in step 1) to post to as an app.
+
+## Create a configmap to override the default prometheus-alertmanager configmap.
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alertmanager
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 1m
+
+    receivers:
+    - name: 'notifications'
+      email_configs:
+      - to: aiswaryasarath847@gmail.com
+        from: aiswaryasarath847@gmail.com
+        smarthost: smtp.gmail.com:587
+        auth_username: aiswaryasarath847@gmail.com
+        auth_identity: aiswaryasarath847@gmail.com
+        auth_password: test test test test
+        send_resolved: true
+        headers:
+          subject: "Prometheus - Alert"
+          text: "{{ range .Alerts }} Hi, \n{{ .Annotations.summary }}\n{{ .Annotations.description }} {{end}}"
+
+      slack_configs:
+      - channel: '#sre'
+        send_resolved: true
+        api_url: 'https://hooks.slack.com/services/testhookfromStep4Above'
+
+    route:
+      group_wait: 10s
+      group_interval: 2m
+      receiver: 'notifications'
+      repeat_interval: 2m
+
+```
+Edit the cm
+``
+kubectl edit cm prometheus-alertmanager -n sre
+```
+The output would be similar to this saying that it has been saved to a temp file.
+```
+A copy of your changes has been stored to "/tmp/kubectl-edit-1867798316.yaml"
+```
+Apply this change with the below command
+```
+ kubectl apply -f /tmp/kubectl-edit-1867798316.yaml -n sre
+```
+Delete the existing pod for the config changes to take effect.
+```
+kubectl get pods -n sre
+# The pod name from the above command was prometheus-alertmanager-0
+kubectl delete pod prometheus-alertmanager-0  -n sre
+```
+Wait for the pod of the Stateful set to delete and restart. 
+
+## Check gmail and slack for alerts
+
+<img width="665" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/bf181041-f882-4e0b-bbcc-24cf551491ba">
+<img width="825" alt="image" src="https://github.com/aishwaryasarath/sre-task-repo/assets/49971693/f03e7d5d-705a-455c-a15f-a6a343d5bc94">
 
