@@ -117,15 +117,15 @@ data:
       repeat_interval: 2m
 
 ```
-Edit the cm
-``
+## Edit the cm
+```
 kubectl edit cm prometheus-alertmanager -n sre
 ```
 The output would be similar to this saying that it has been saved to a temp file.
 ```
 A copy of your changes has been stored to "/tmp/kubectl-edit-1867798316.yaml"
 ```
-Apply this change with the below command
+## Apply this change with the below command
 ```
  kubectl apply -f /tmp/kubectl-edit-1867798316.yaml -n sre
 ```
