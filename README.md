@@ -99,7 +99,7 @@ data:
         smarthost: smtp.gmail.com:587
         auth_username: aiswaryasarath847@gmail.com
         auth_identity: aiswaryasarath847@gmail.com
-        auth_password: test test test test
+        auth_password: ${{ secrets.GMAILPASS }}
         send_resolved: true
         headers:
           subject: "Prometheus - Alert"
