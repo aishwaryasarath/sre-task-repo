@@ -8,6 +8,7 @@ In this project, the task is to deploy UpCommerce's website as a service on Kube
 ## Prerequisite
 
 Set up docker, helm, minikube
+
 Define the alert rules and triggers that should fire off the alerts in prometheus.yml
 
 
